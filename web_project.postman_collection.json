@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "dac2b482-5ea1-41d0-a2d2-453f6ea84dc8",
+		"name": "web_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36263933"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "Ali Rezai",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "amirzadehmohammadjavad203@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "user_type",
+									"value": "normal",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": "127.0.0.1:5000/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "verify_email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "amirzadehmohammadjavad203@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "602019",
+									"type": "text"
+								}
+							]
+						},
+						"url": "127.0.0.1:5000/auth/verify-email"
+					},
+					"response": []
+				},
+				{
+					"name": "resend_verification_code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "amirzadehmohammadjavad203@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": "127.0.0.1:5000/auth/resend-code"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "amirzadehmohammadjavad203@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": "127.0.0.1:5000/auth/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservation",
+			"item": []
+		}
+	]
+}
