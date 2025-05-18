@@ -119,7 +119,94 @@
 		},
 		{
 			"name": "Reservation",
-			"item": []
+			"item": [
+				{
+					"name": "Devices",
+					"item": [
+						{
+							"name": "all-devices",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "127.0.0.1:5000/device/all"
+							},
+							"response": []
+						},
+						{
+							"name": "get-device",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "127.0.0.1:5000/device/1"
+							},
+							"response": []
+						},
+						{
+							"name": "add-device",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "PS5-1",
+											"type": "text"
+										},
+										{
+											"key": "device_type",
+											"value": "PS5",
+											"type": "text"
+										},
+										{
+											"key": "hourly_rate",
+											"value": "100000",
+											"type": "text"
+										},
+										{
+											"key": "free_rate",
+											"value": "150000",
+											"type": "text"
+										},
+										{
+											"key": "picture",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": "127.0.0.1:5000/device/add"
+							},
+							"response": []
+						},
+						{
+							"name": "update-device",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "127.0.0.1:5000/device/add"
+							},
+							"response": []
+						},
+						{
+							"name": "delete-device",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	]
 }

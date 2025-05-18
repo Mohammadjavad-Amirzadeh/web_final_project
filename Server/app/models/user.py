@@ -18,6 +18,8 @@ class User(db.Model):
     email_verified = db.Column(db.Boolean, default=False)
 
     user_type = db.Column(db.Enum(UserType), default=UserType.NORMAL)
+    is_admin = db.Column(db.Boolean, default=False) 
+
     credit = db.Column(db.Float, default=0.0)
     debt = db.Column(db.Float, default=0.0)
     total_spent = db.Column(db.Float, default=0.0)

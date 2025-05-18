@@ -16,5 +16,6 @@ class Device(db.Model):
     hourly_rate = db.Column(db.Float, nullable=False)
     free_mode_rate = db.Column(db.Float, nullable=True)
     is_available = db.Column(db.Boolean, default=True)
+    picture_url = db.Column(db.String(255), nullable=False)
 
     reservations = db.relationship("Reservation", back_populates="device")
