@@ -12,7 +12,7 @@ from app.utils.jwt_token_handler import generate_jwt
 
 load_dotenv()
 
-EXPIRATION_VERIFICATION_CODE_TIME = int(os.getenv("EXPIRATION_VERIFICATION_CODE_TIME", 30)) 
+EXPIRATION_VERIFICATION_CODE_TIME = int(os.getenv("EXPIRATION_VERIFICATION_CODE_TIME")) 
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -68,7 +68,7 @@ def signup():
             user_id=user.id,
             email=email,
             code=code,
-            expire_time=datetime.utcnow() + timedelta(seconds=30)
+            expire_time=datetime.utcnow() + timedelta(seconds=EXPIRATION_VERIFICATION_CODE_TIME)
         )
         db.session.add(verification_code)
         db.session.commit()
@@ -77,7 +77,8 @@ def signup():
 
         return jsonify({
             "message": "User created successfully",
-            "user_id": user.id
+            "user_id": user.id,
+            'time': datetime.utcnow(),
         }), 201
 
     except IntegrityError:
@@ -142,22 +143,19 @@ def resend_verification_code():
         if user.email_verified:
             return jsonify({"message": "Email is already verified"}), 200
 
-        # حذف کدهای قبلی
         VerificationCode.query.filter_by(user_id=user.id).delete()
 
-        # ایجاد کد جدید
         new_code = generate_verification_code()
         verification_code = VerificationCode(
             user_id=user.id,
             email=user.email,
             code=new_code,
-            expire_time=datetime.utcnow() + timedelta(seconds=30)
+            expire_time=datetime.utcnow() + timedelta(seconds=EXPIRATION_VERIFICATION_CODE_TIME)
         )
 
         db.session.add(verification_code)
         db.session.commit()
 
-        # ارسال ایمیل
         send_verification_code(user.email, new_code)
 
         return jsonify({"message": "Verification code resent successfully"}), 200
