@@ -9,10 +9,17 @@ from app.utils.send_email import send_verification_code
 from dotenv import load_dotenv
 import os
 from app.utils.jwt_token_handler import generate_jwt
+import threading
+from flask import current_app
+
 
 load_dotenv()
-
 EXPIRATION_VERIFICATION_CODE_TIME = int(os.getenv("EXPIRATION_VERIFICATION_CODE_TIME")) 
+        
+
+# def async_send(email, code):
+#     with current_app.app_context():
+#         send_verification_code(email, code)        
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -68,17 +75,20 @@ def signup():
             user_id=user.id,
             email=email,
             code=code,
-            expire_time=datetime.utcnow() + timedelta(seconds=EXPIRATION_VERIFICATION_CODE_TIME)
+            expire_time=datetime.now() + timedelta(seconds=EXPIRATION_VERIFICATION_CODE_TIME)
         )
         db.session.add(verification_code)
         db.session.commit()
 
-        send_verification_code(email, code)
-
+        if email:
+            send_verification_code(email, code)
+            # email_thread = threading.Thread(target=async_send, args=(email, code), daemon=True)
+            # email_thread.start()
+            
         return jsonify({
             "message": "User created successfully",
             "user_id": user.id,
-            'time': datetime.utcnow(),
+            'time': datetime.now(),
         }), 201
 
     except IntegrityError:
@@ -108,7 +118,7 @@ def verify_email():
         if not verification:
             return jsonify({"error": "Invalid code or email"}), 404
 
-        if verification.expire_time < datetime.utcnow():
+        if verification.expire_time < datetime.now():
             # db.session.delete(verification)
             # db.session.commit()
             return jsonify({"error": "Code has expired"}), 410
@@ -150,14 +160,16 @@ def resend_verification_code():
             user_id=user.id,
             email=user.email,
             code=new_code,
-            expire_time=datetime.utcnow() + timedelta(seconds=EXPIRATION_VERIFICATION_CODE_TIME)
+            expire_time=datetime.now() + timedelta(seconds=EXPIRATION_VERIFICATION_CODE_TIME)
         )
 
         db.session.add(verification_code)
         db.session.commit()
 
-        send_verification_code(user.email, new_code)
-
+        if email:
+            email_thread = threading.Thread(target=send_verification_code, args=(email, new_code), daemon=True)
+            email_thread.start()
+            
         return jsonify({"message": "Verification code resent successfully"}), 200
 
     except Exception as e:

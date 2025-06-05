@@ -9,7 +9,7 @@ class VerificationCode(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     email = db.Column(db.String(100), nullable=False) 
     code = db.Column(db.Integer, nullable=False)
-    expire_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.utcnow() + timedelta(minutes=10))
+    expire_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now() + timedelta(minutes=10))
 
     user = db.relationship("User", backref=db.backref("verification_codes", cascade="all, delete-orphan"))
 
