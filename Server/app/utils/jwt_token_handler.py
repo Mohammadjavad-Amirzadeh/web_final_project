@@ -24,7 +24,6 @@ def verify_jwt_request(request):
         return None, jsonify({"error": "Authorization token missing or malformed"}), 401
 
     token = auth_header.split(" ")[1]
-    print(token)
     try:
         payload = decode_jwt_token(token)
         return payload, None, None

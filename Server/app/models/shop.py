@@ -1,5 +1,15 @@
 from ..extensions import db
 from datetime import datetime
+import enum
+
+class ProductCategory(enum.Enum):
+    FOODS = 'FOODS'
+    HOT_DRINKS = 'HOT_DRINKS'
+    COLD_DRINKS = 'COLD_DRINKS'
+    CAKES = 'CAKES'
+    SNACKS = 'SNACKS'
+
+
 
 class Product(db.Model):
     __tablename__ = 'products'
@@ -9,6 +19,8 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     total_sold = db.Column(db.Integer, default=0)
 
+    category = db.Column(db.Enum(ProductCategory), nullable=False)
+
     order_items = db.relationship("OrderItem", back_populates="product")
 
 
@@ -17,7 +29,8 @@ class Order(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    is_completed = db.Column(db.Boolean, default=False)
 
     user = db.relationship("User")
     items = db.relationship("OrderItem", back_populates="order")
